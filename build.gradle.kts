@@ -26,10 +26,18 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa") //@Entity 사용 가능
+    implementation("org.springframework.boot:spring-boot-starter-validation") //@NotBlank 사용 가능
+    implementation("org.springframework.boot:spring-boot-starter-security") //passwordEncoder 사용 가능
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2") // JWT 사용 가능
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2") // JWT 사용 가능
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2") // JWT 사용 가능
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springdoc:springdoc-openapi-ui:1.5.13") // Swagger UI
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.5.13") // Swagger UI
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
