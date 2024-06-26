@@ -15,7 +15,6 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
-
     @Transactional
     fun signup(signupRequestDto: SignupRequestDto): User {
         if (userRepository.existsByNickname(signupRequestDto.nickname)) {

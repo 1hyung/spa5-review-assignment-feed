@@ -1,8 +1,8 @@
-package com.teamsparta.spa5reviewassignmentfeed.domain.feed.controller.v1
+package com.teamsparta.spa5reviewassignmentfeed.domain.comment.controller.v1
 
-import com.teamsparta.spa5reviewassignmentfeed.domain.feed.dto.v1.FeedRequestDto
-import com.teamsparta.spa5reviewassignmentfeed.domain.feed.dto.v1.FeedResponseDto
-import com.teamsparta.spa5reviewassignmentfeed.domain.feed.service.v1.FeedService
+import com.teamsparta.spa5reviewassignmentfeed.domain.comment.dto.v1.CommentRequestDto
+import com.teamsparta.spa5reviewassignmentfeed.domain.comment.dto.v1.CommentResponseDto
+import com.teamsparta.spa5reviewassignmentfeed.domain.comment.service.v1.CommentService
 import com.teamsparta.spa5reviewassignmentfeed.infra.security.JwtTokenProvider
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
@@ -17,56 +17,52 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/feeds")
-class FeedController(
-    private val feedService: FeedService,
+@RequestMapping("/api/v1/comments")
+class CommentController(
+    private val commentService: CommentService,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
-    @GetMapping
-    fun getFeeds(): ResponseEntity<List<FeedResponseDto>> {
-        return ResponseEntity.ok(feedService.getFeeds())
-    }
-
-    @PostMapping
-    fun createFeed(
-        @RequestBody @Validated feedRequestDto: FeedRequestDto,
+    @PostMapping("/{feedId}")
+    fun createComment(
+        @PathVariable feedId: Long,
+        @RequestBody @Validated commentRequestDto: CommentRequestDto,
         request: HttpServletRequest
     ): ResponseEntity<String> {
         val token = request.cookies?.find { it.name == "token" }?.value
             ?: return ResponseEntity.status(401).body("토큰이 없습니다.")
         val nickname = jwtTokenProvider.getNicknameFromToken(token)
-        feedService.createFeed(feedRequestDto, nickname)
-        return ResponseEntity.ok("게시글이 작성되었습니다.")
+        commentService.createComment(feedId, nickname, commentRequestDto)
+        return ResponseEntity.ok("댓글이 작성되었습니다.")
     }
 
-    @GetMapping("/{id}")
-    fun getFeed(@PathVariable id: Long): ResponseEntity<FeedResponseDto> {
-        val feed = feedService.getFeed(id)
-        return ResponseEntity.ok(feed)
+    @GetMapping("/{feedId}")
+    fun getComments(@PathVariable feedId: Long): ResponseEntity<List<CommentResponseDto>> {
+        val comments = commentService.getComments(feedId)
+        return ResponseEntity.ok(comments)
     }
 
-    @PutMapping("/{id}")
-    fun updateFeed(
-        @PathVariable id: Long,
-        @RequestBody @Validated feedRequestDto: FeedRequestDto,
+    @PutMapping("/{commentId}")
+    fun updateComment(
+        @PathVariable commentId: Long,
+        @RequestBody @Validated commentRequestDto: CommentRequestDto,
         request: HttpServletRequest
     ): ResponseEntity<String> {
         val token = request.cookies?.find { it.name == "token" }?.value
             ?: return ResponseEntity.status(401).body("토큰이 없습니다.")
         val nickname = jwtTokenProvider.getNicknameFromToken(token)
-        feedService.updateFeed(id, feedRequestDto, nickname)
-        return ResponseEntity.ok("게시글이 수정되었습니다.")
+        commentService.updateComment(commentId, nickname, commentRequestDto)
+        return ResponseEntity.ok("댓글이 수정되었습니다.")
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteFeed(
-        @PathVariable id: Long,
+    @DeleteMapping("/{commentId}")
+    fun deleteComment(
+        @PathVariable commentId: Long,
         request: HttpServletRequest
     ): ResponseEntity<String> {
         val token = request.cookies?.find { it.name == "token" }?.value
             ?: return ResponseEntity.status(401).body("토큰이 없습니다.")
         val nickname = jwtTokenProvider.getNicknameFromToken(token)
-        feedService.deleteFeed(id, nickname)
-        return ResponseEntity.ok("게시글이 삭제되었습니다.")
+        commentService.deleteComment(commentId, nickname)
+        return ResponseEntity.ok("댓글이 삭제되었습니다.")
     }
 }
