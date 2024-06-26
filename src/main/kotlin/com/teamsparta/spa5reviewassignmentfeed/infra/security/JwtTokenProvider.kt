@@ -24,11 +24,15 @@ class JwtTokenProvider {
     }
 
     fun getNicknameFromToken(token: String): String {
-        return Jwts.parserBuilder()
-            .setSigningKey(secretKey.toByteArray())
-            .build()
-            .parseClaimsJws(token)
-            .body
-            .subject
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey.toByteArray())
+                .build()
+                .parseClaimsJws(token)
+                .body
+                .subject
+        } catch (e: Exception) {
+            throw IllegalArgumentException("유효하지 않은 토큰입니다.")
+        }
     }
 }
