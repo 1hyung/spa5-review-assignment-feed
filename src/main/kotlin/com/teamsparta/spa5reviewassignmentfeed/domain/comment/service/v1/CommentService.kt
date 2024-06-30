@@ -35,7 +35,8 @@ class CommentService(
                 id = it.id,
                 comment = it.comment,
                 nickname = it.user.nickname,
-                createdDate = it.createdDate
+                createdDate = it.createdDate,
+                thumbUp = it.thumbUp
             )
         }
     }
@@ -58,5 +59,12 @@ class CommentService(
             throw IllegalArgumentException("작성자만 삭제할 수 있습니다.")
         }
         commentRepository.delete(comment)
+    }
+
+    @Transactional
+    fun thumbUpComment(commentId: Long) {
+        val comment = commentRepository.findById(commentId).orElseThrow { IllegalArgumentException("댓글을 찾을 수 없습니다.") }
+        comment.thumbUp += 1
+        commentRepository.save(comment)
     }
 }

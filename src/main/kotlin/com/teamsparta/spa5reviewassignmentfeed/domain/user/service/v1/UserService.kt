@@ -45,12 +45,18 @@ class UserService(
     @Transactional
     fun login(loginRequestDto: LoginRequestDto): String {
         val user = userRepository.findByNickname(loginRequestDto.nickname)
-            ?: throw IllegalArgumentException("존재하지 않는 사용자입니다.")
+            ?: throw IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.")
 
         if (!passwordEncoder.matches(loginRequestDto.password, user.password)) {
-            throw IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+            throw IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.")
         }
 
         return jwtTokenProvider.createToken(user.nickname)
+    }
+
+    fun createUser(nickname: String, password: String): User {
+        val encodedPassword = passwordEncoder.encode(password)
+        val user = User(nickname = nickname, password = encodedPassword)
+        return userRepository.save(user)
     }
 }
