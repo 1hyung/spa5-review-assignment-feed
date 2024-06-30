@@ -35,10 +35,12 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2") // JWT 사용 가능
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2") // JWT 사용 가능
     runtimeOnly("com.h2database:h2") // H2 사용 가능
+    runtimeOnly("org.postgresql:postgresql")// PostgreSQL 사용 가능
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.springdoc:springdoc-openapi-ui:1.5.13") // Swagger UI
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.5.13") // Swagger UI
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.9") // Swagger UI
+    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.9") // Swagger UI
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9") // Swagger UI
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

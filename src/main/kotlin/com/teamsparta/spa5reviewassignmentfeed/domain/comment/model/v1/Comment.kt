@@ -33,5 +33,8 @@ data class Comment(
     val createdDate: LocalDateTime = LocalDateTime.now(),
 
     @Column(nullable = false)
-    var modifiedDate: LocalDateTime = LocalDateTime.now()
+    var modifiedDate: LocalDateTime = LocalDateTime.now(),
+
+    @Column(nullable = false)
+    var thumbUp: Int = 0
 )

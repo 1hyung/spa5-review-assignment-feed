@@ -65,4 +65,10 @@ class CommentController(
         commentService.deleteComment(commentId, nickname)
         return ResponseEntity.ok("댓글이 삭제되었습니다.")
     }
+
+    @PostMapping("/{commentId}/thumb-up")
+    fun thumbUpComment(@PathVariable commentId: Long): ResponseEntity<String> {
+        commentService.thumbUpComment(commentId)
+        return ResponseEntity.ok("좋아요가 추가되었습니다.")
+    }
 }
